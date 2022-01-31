@@ -10,7 +10,7 @@ const contactsExample = [
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 ];
 
-const contacts = createReducer(contactsExample, {
+const contacts = createReducer([], {
   [fetchContactsList.fulfilled]: (_, { payload }) => payload,
   [addContact.fulfilled]: (state, { payload }) => [...state, payload],
   [deleteContactsOps.fulfilled]: (state, { payload }) => {

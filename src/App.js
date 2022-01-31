@@ -6,38 +6,44 @@ import { Container } from './components/Container/Container';
 import { Filter } from './components/Filter/Filter';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+// import {
+//   addContact,
+//   deleteContact,
+//   filterContact,
+// } from './redux/contacts/contactsActions';
+import { save } from './services/localStorage';
 import {
   addContact,
-  deleteContact,
+  fetchContactsList,
+  deleteContactsOps,
   filterContact,
-} from './redux/contacts/contactsActions';
-import { save } from './services/localStorage';
+} from './redux/contacts/actions';
 
 function App() {
   const contacts = useSelector(state => state.phonebookReducers.contacts);
   const filter = useSelector(state => state.phonebookReducers.filter);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const contactsFromStorage = localStorage.getItem('contacts');
-    const parsedStoragedContacts = JSON.parse(contactsFromStorage);
-    if (parsedStoragedContacts) {
-      parsedStoragedContacts.map(storageContact => {
-        if (
-          contacts.some(contact => {
-            return contact.name === storageContact.name;
-          })
-        ) {
-          return true;
-        }
-        return dispatch(addContact(storageContact));
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   const contactsFromStorage = localStorage.getItem('contacts');
+  //   const parsedStoragedContacts = JSON.parse(contactsFromStorage);
+  //   if (parsedStoragedContacts) {
+  //     parsedStoragedContacts.map(storageContact => {
+  //       if (
+  //         contacts.some(contact => {
+  //           return contact.name === storageContact.name;
+  //         })
+  //       ) {
+  //         return true;
+  //       }
+  //       return dispatch(addContact(storageContact));
+  //     });
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    save('contacts', contacts);
-  }, [contacts]);
+  // useEffect(() => {
+  //   save('contacts', contacts);
+  // }, [contacts]);
 
   const createContact = newContact => {
     const dublicateContact = contacts.some(checkedContact => {
@@ -50,12 +56,12 @@ function App() {
       alert(`${newContact.name} is already in contacts`);
       return;
     }
-
+    console.log('newContact', newContact);
     dispatch(addContact(newContact));
   };
 
   const handleDelete = contactId => {
-    dispatch(deleteContact(contactId));
+    dispatch(deleteContactsOps(contactId));
   };
 
   const changeFilter = e => {
@@ -63,7 +69,12 @@ function App() {
     dispatch(filterContact(value));
   };
 
+  useEffect(() => {
+    dispatch(fetchContactsList());
+  }, [dispatch]);
+
   const getFilteredContacts = () => {
+    // const baseContacts = dispatch(fetchContactsList());
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(filter.toLowerCase()),
     );

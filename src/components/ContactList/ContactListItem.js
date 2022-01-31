@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './ContactListItem.module.scss';
 
-export const ContactListItem = ({ name, number, id, onDelete }) => {
+export const ContactListItem = ({ name, phone, id, onDelete }) => {
   return (
     <>
       <span>
-        {name} : {number}
+        {name} : {phone}
       </span>
       <button
         className={styles.button}
@@ -21,7 +21,7 @@ export const ContactListItem = ({ name, number, id, onDelete }) => {
 
 ContactListItem.propTypes = {
   name: PropTypes.string,
-  number: PropTypes.string.isRequired,
+  phone: PropTypes.string,
   id: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
 };

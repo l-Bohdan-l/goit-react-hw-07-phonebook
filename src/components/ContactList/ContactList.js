@@ -2,6 +2,12 @@ import React from 'react';
 import { ContactListItem } from './ContactListItem';
 import PropTypes from 'prop-types';
 import styles from './ContactList.module.scss';
+import {
+  addContact,
+  fetchContactsList,
+  deleteContactsOps,
+  filterContact,
+} from '../../redux/contacts/actions';
 
 export const ContactsList = ({ contacts, onDelete }) => {
   return (
